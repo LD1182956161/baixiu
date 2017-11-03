@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			.wrap {
+				width: 1200px;
+				margin: 10px auto;
+			}
+			
+			.slide {
+				height: 500px;
+				position: relative;
+			}
+			
+			.slide li {
+				position: absolute;
+				left: 200px;
+				top: 0;
+			}
+			
+			.slide li img {
+				width: 100%;
+			}
+			
+			.arrow {
+				opacity: 0;
+			}
+			
+			.prev,
+			.next {
+				width: 76px;
+				height: 112px;
+				position: absolute;
+				top: 50%;
+				margin-top: -56px;
+				background: url(./images/prev.png) no-repeat;
+				z-index: 99;
+			}
+			
+			.next {
+				right: 0;
+				background-image: url(./images/next.png);
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div class="wrap" id="wrap">
+			<div class="slide" id="slide">
+				<ul>
+					<li>
+						<a href="#"><img src="images/slidepic1.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="images/slidepic2.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="images/slidepic3.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="images/slidepic4.jpg" alt=""></a>
+					</li>
+					<li>
+						<a href="#"><img src="images/slidepic5.jpg" alt=""></a>
+					</li>
+				</ul>
+				<div class="" id="arrow">
+					<a href="javascript:;" class="prev"></a>
+					<a href="javascript:;" class="next"></a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="startMove.js"></script>
+	<script type="text/javascript">
+		var arrJson = [{ //  1
+				width: 400,
+				top: 70,
+				left: 50,
+				opacity: 20,
+				z: 2
+			},
+			{ // 2
+				width: 600,
+				top: 120,
+				left: 0,
+				opacity: 80,
+				z: 3
+			},
+			{ // 3
+				width: 800,
+				top: 100,
+				left: 200,
+				opacity: 100,
+				z: 4
+			},
+			{ // 4
+				width: 600,
+				top: 120,
+				left: 600,
+				opacity: 80,
+				z: 3
+			},
+			{ //5
+				width: 400,
+				top: 70,
+				left: 750,
+				opacity: 20,
+				z: 2
+			}
+		];
+
+		var timer = null;
+
+		var aLi = $('li', $('#slide'));
+		//		  for (var i = 0; i < aLi.length; i++) {
+		//		  startMove(aLi[i],arrJson[i],10)
+		//		  }
+
+		autoPlay();
+		var oPrev = $('a', $('#arrow'))[0];
+
+		var oNext = $('a', $("#arrow"))[1];
+		//单击右侧按钮
+		oNext.onclick = function() {
+			//		    	//让最后一个li放到第一个前面
+			//		    	  arrJson.push(arrJson.unshift());
+			//		    	for (var i = 0; i < aLi.length; i++) {
+			//		  startMove(aLi[i],arrJson[i],10)
+			//		  }
+			autoPlay(true);
+
+		}
+
+		//单击左侧按钮
+		 oPrev.onclick = function() {
+			
+			//		    	  arrJson.push(arrJson.shift());
+			//		    	for (var i = 0; i < aLi.length; i++) {
+			//		  startMove(aLi[i],arrJson[i],10)
+			//		  }
+			autoPlay(false);
+
+		}
+
+		function autoPlay(onOff) {
+			if(onOff != undefined) {
+				if(onOff) {
+					arrJson.push(arrJson.shift());
+				} else {
+					arrJson.unshift(arrJson.pop());
+				}
+			}
+			for(var i = 0; i < aLi.length; i++) {
+				startMove(aLi[i], arrJson[i], 10)
+			}
+
+		}
+		//开启定时器
+		timer=setInterval(function(){
+			      		autoPlay(true);
+		},2000)
+		
+		
+		//鼠标移上去清除定时器
+		$('#slide').onmouseover=function(){
+			
+			clearInterval(timer);
+			
+		}
+		
+		//鼠标移出去开启定时器
+			$('#slide').onmouseout=function(){
+			
+				timer=setInterval(function(){
+			      		autoPlay(true);
+		},2000)
+			
+		}
+		
+		
+	</script>
+
+</html>
